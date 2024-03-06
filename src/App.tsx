@@ -1,15 +1,21 @@
+import Routes from "./routes";
+import {useAuth} from "@clerk/clerk-react";
+import {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 
+export default function App() {
+    const { isSignedIn, isLoaded } = useAuth();
+    const navigate = useNavigate();
 
-function App() {
+    useEffect(() => {
+        if (isLoaded) {
+            if (isSignedIn) {
+                navigate("/");
+            } else {
+                navigate("/sign-in");
+            }
+        }
+    }, [isLoaded, isSignedIn, navigate]);
 
-  return (
-    <>
-      <main>
-        <h1 className="text-4xl">React Typescript App</h1>
-      </main>
-
-    </>
-  )
+    return <Routes />
 }
-
-export default App
