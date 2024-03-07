@@ -29,7 +29,7 @@ export default function DashboardLayout() {
                 </Group>
             </AppShell.Header>
             <AppShell.Navbar p="md">
-                Navbar
+                Sidebar
                 {Array(15)
                     .fill(0)
                     .map((_, index) => (
