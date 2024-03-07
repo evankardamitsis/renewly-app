@@ -1,7 +1,9 @@
 import { useAuth } from "@clerk/clerk-react"
 import { Outlet,  } from "react-router-dom"
 import {useDisclosure} from "@mantine/hooks";
-import {AppShell, Burger, Group, Skeleton} from "@mantine/core";
+import {AppShell, Burger, Flex} from "@mantine/core";
+import Header from "../components/@common/Header.tsx";
+import Sidebar from "../components/@common/Sidebar.tsx";
 
 export default function DashboardLayout() {
     const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
@@ -22,19 +24,14 @@ export default function DashboardLayout() {
             padding="md"
         >
             <AppShell.Header>
-                <Group h="100%" px="md">
+                <Flex mt="sm" gap="md" align="center" px="md">
                     <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
                     <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
-                    Renewly
-                </Group>
+                    <Header />
+                </Flex>
             </AppShell.Header>
             <AppShell.Navbar p="md">
-                Sidebar
-                {Array(15)
-                    .fill(0)
-                    .map((_, index) => (
-                        <Skeleton key={index} h={28} mt="sm" animate={false} />
-                    ))}
+                <Sidebar />
             </AppShell.Navbar>
             <AppShell.Main>
                 <Outlet />
