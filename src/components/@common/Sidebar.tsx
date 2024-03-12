@@ -3,7 +3,7 @@ import {OrganizationSwitcher} from "@clerk/clerk-react";
 
 const Sidebar = () => {
     return (
-        <Stack>
+        <Stack w="100%">
             <OrganizationSwitcher />
         </Stack>
     );

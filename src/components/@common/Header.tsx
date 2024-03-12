@@ -6,7 +6,7 @@ const Header = () => {
 
     const { user } = useUser();
 
-    const firstName = user.firstName;
+    const firstName = user?.firstName;
 
     return (
         <Flex justify="space-between" align="center" w="100%">
