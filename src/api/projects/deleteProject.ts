@@ -1,6 +1,6 @@
 import { supabaseClient } from "../../../supabaseClient.ts";
 
-export async function deleteProject(id, userId, token) {
+export async function deleteProject(id:number, userId:string, token:string) {
     const supabase = await supabaseClient(token);
 
     const { data, error } = await supabase

@@ -1,6 +1,11 @@
 import { supabaseClient } from "../../../supabaseClient.ts";
 
-export async function getProjects({ orgId, token }) {
+type Props =  {
+    orgId: string
+    token: string
+}
+
+export async function getProjects({ orgId, token }:Props) {
     const supabase = await supabaseClient(token);
 
     let query = supabase.from('projects').select('*');

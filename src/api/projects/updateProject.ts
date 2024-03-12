@@ -1,6 +1,6 @@
 import {supabase} from "../../../supabaseClient.ts";
 
-export async function updateProject(projectId: string, updates: any) {
+export async function updateProject(projectId: string, updates: never) {
     const { data, error } = await supabase
         .from('Projects')
         .update(updates)
