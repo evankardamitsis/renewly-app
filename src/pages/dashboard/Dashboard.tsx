@@ -31,7 +31,7 @@ export default function DashboardPage() {
         setProjects(projects);
     }
 
-    const handleDeleteProject = async (id) => {
+    const handleDeleteProject = async (id:number) => {
         const token = await getToken({ template: 'supabase' });
         await deleteProject(id, userId, token);
 

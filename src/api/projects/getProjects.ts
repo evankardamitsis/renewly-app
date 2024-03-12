@@ -1,8 +1,8 @@
 import { supabaseClient } from "../../../supabaseClient.ts";
 
 type Props =  {
-    orgId: string
-    token: string
+    orgId: string | null
+    token: string | null
 }
 
 export async function getProjects({ orgId, token }:Props) {

@@ -1,6 +1,6 @@
 import {createClient} from "@supabase/supabase-js";
 
-export const supabaseClient = async(supabaseToken) => {
+export const supabaseClient = async(supabaseToken:string) => {
     const supabase = createClient(
         import.meta.env.VITE_SUPABASE_URL,
         import.meta.env.VITE_SUPABASE_KEY,
