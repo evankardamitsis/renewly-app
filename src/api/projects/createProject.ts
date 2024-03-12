@@ -5,13 +5,13 @@ export type ProjectDetails = {
     description: string;
 };
 
-export async function createProject(userId, token, projectDetails : ProjectDetails) {
+export async function createProject(orgId, token, projectDetails : ProjectDetails) {
     const supabase = await supabaseClient(token);
 
     const { data, error } = await supabase
         .from('projects')
         .insert({
-            user_id: userId,
+            org_id: orgId,
             ... projectDetails
 
         })

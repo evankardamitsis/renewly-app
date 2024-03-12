@@ -7,27 +7,27 @@ import {deleteProject} from "../../api/projects/deleteProject.ts";
 
 export default function DashboardPage() {
     const [projects, setProjects] = useState([]);
-    const { userId, getToken } = useAuth();
+    const { userId, orgId, getToken } = useAuth();
 
     useEffect(() => {
         const fetchProjects = async () => {
            const token = await getToken({template:'supabase'})
 
-            const projects = await getProjects({userId, token});
+            const projects = await getProjects({orgId, userId, token});
 
             setProjects(projects);
         };
         fetchProjects();
-    }, [getToken, userId]);
+    }, [getToken, orgId, userId]);
 
     const handleCreateProject = async () => {
         const token = await getToken({template:'supabase'})
-       await createProject(userId, token, {
-            name: "testtttt Project",
+       await createProject(orgId, token, {
+            name: "BTF Project",
             description: "This is a new project"
         });
 
-        const projects = await getProjects({userId, token});
+        const projects = await getProjects({orgId, userId, token});
         setProjects(projects);
     }
 
@@ -35,7 +35,7 @@ export default function DashboardPage() {
         const token = await getToken({ template: 'supabase' });
         await deleteProject(id, userId, token);
 
-        const projects = await getProjects({userId, token});
+        const projects = await getProjects({userId, orgId, token});
         setProjects(projects);
     }
 

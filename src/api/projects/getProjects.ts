@@ -1,12 +1,17 @@
-import {supabaseClient} from "../../../supabaseClient.ts";
+import { supabaseClient } from "../../../supabaseClient.ts";
 
-export async function getProjects({userId, token}) {
+export async function getProjects({ orgId, token }) {
     const supabase = await supabaseClient(token);
 
-    const { data: projects, error } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('user_id', userId);
+    let query = supabase.from('projects').select('*');
+    if (orgId) {
+        query = query.eq('org_id', orgId);
+    } else {
+        // Fetch projects with no org_id associated
+        query = query.is('org_id', null);
+    }
+
+    const { data: projects, error } = await query;
 
     if (error) throw error;
 
