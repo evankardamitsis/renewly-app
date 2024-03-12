@@ -26,7 +26,8 @@
     "postcss-nesting": "^12.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.2"
+    "react-router-dom": "^6.22.2",
+    "supabase": "^1.148.6"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",
