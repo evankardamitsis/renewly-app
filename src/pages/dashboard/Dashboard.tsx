@@ -5,8 +5,14 @@ import {useEffect, useState} from "react";
 import {getProjects} from "../../api/projects/getProjects.ts";
 import {deleteProject} from "../../api/projects/deleteProject.ts";
 
+interface Project {
+    id: number;
+    name: string;
+    description: string;
+}
+
 export default function DashboardPage() {
-    const [projects, setProjects] = useState([]);
+    const [projects, setProjects] = useState<Project>([]);
     const { userId, orgId, getToken } = useAuth();
 
     useEffect(() => {
@@ -31,7 +37,7 @@ export default function DashboardPage() {
         setProjects(projects);
     }
 
-    const handleDeleteProject = async (id) => {
+    const handleDeleteProject = async (id:number) => {
         const token = await getToken({ template: 'supabase' });
         await deleteProject(id, userId, token);
 
