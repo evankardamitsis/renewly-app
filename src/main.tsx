@@ -35,7 +35,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                   <DatesProvider settings={{ locale: "en-gb" }}>
                       <ModalsProvider>
                           <Router basename={HOME_PAGE}>
-                              <App />
+                                <App />
                           </Router>
                       </ModalsProvider>
                   </DatesProvider>
