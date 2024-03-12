@@ -1,17 +1,18 @@
-import {supabase} from "../../../supabaseClient.ts";
+import {supabaseClient} from "../../../supabaseClient.ts";
 import {ProjectDetails} from "./createProject.ts";
 
-export async function updateProject(orgId:string | null, token:string | null, projectDetails : ProjectDetails, projectId:number) {
+export async function updateProject(id:number, orgId:string, token:string, projectDetails : ProjectDetails) {
+    const supabase = await supabaseClient(token);
+
     const { data, error } = await supabase
         .from('projects')
         .update({
+            org_id: orgId,
             ... projectDetails
         })
-        .eq('id', projectId)
-        .eq('org_id', orgId)
+        .eq('id', id);
 
-    if (error) throw new Error(error.message);
+    if (error) throw error;
 
     return data;
-
 }

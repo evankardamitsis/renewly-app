@@ -5,13 +5,20 @@ import {useEffect, useState} from "react";
 import {getProjects} from "../../api/projects/getProjects.ts";
 import {deleteProject} from "../../api/projects/deleteProject.ts";
 
+interface Project {
+    id: number;
+    name: string;
+    description: string;
+}
+
 export default function DashboardPage() {
-    const [projects, setProjects] = useState([]);
+    const [projects, setProjects] = useState<Project[]>([]);
     const { userId, orgId, getToken } = useAuth();
 
     useEffect(() => {
         const fetchProjects = async () => {
            const token = await getToken({template:'supabase'})
+            if (!orgId || !userId) return;
 
             const projects = await getProjects({orgId, userId, token});
 
@@ -22,6 +29,8 @@ export default function DashboardPage() {
 
     const handleCreateProject = async () => {
         const token = await getToken({template:'supabase'})
+        if (!orgId || !userId) return;
+
        await createProject(orgId, token, {
             name: "BTF Project",
             description: "This is a new project"
@@ -33,6 +42,8 @@ export default function DashboardPage() {
 
     const handleDeleteProject = async (id:number) => {
         const token = await getToken({ template: 'supabase' });
+        if (!orgId || !userId) return;
+
         await deleteProject(id, userId, token);
 
         const projects = await getProjects({userId, orgId, token});
