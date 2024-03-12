@@ -18,7 +18,6 @@ export default function DashboardPage() {
     useEffect(() => {
         const fetchProjects = async () => {
            const token = await getToken({template:'supabase'})
-            if (!orgId || !userId) return;
 
             const projects = await getProjects({orgId, userId, token});
 
@@ -29,7 +28,6 @@ export default function DashboardPage() {
 
     const handleCreateProject = async () => {
         const token = await getToken({template:'supabase'})
-        if (!orgId || !userId) return;
 
        await createProject(orgId, token, {
             name: "BTF Project",
@@ -42,7 +40,6 @@ export default function DashboardPage() {
 
     const handleDeleteProject = async (id:number) => {
         const token = await getToken({ template: 'supabase' });
-        if (!orgId || !userId) return;
 
         await deleteProject(id, userId, token);
 

@@ -5,7 +5,7 @@ export type ProjectDetails = {
     description: string;
 };
 
-export async function createProject(orgId:string | null, token:string | null, projectDetails : ProjectDetails) {
+export async function createProject(orgId:string | null, token:string  , projectDetails : ProjectDetails) {
     const supabase = await supabaseClient(token);
 
     const { data, error } = await supabase
