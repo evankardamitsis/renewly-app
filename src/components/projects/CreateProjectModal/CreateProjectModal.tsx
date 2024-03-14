@@ -1,4 +1,3 @@
-import React from 'react';
 import {Modal, Stack, Title, Text, Flex, Badge, TextInput, MultiSelect, Button} from "@mantine/core";
 import {useForm} from "@mantine/form";
 import {ProjectColorPicker} from "../../../models/ProjectColorPicker.ts";
