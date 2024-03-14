@@ -21,9 +21,10 @@ export default function DashboardPage() {
         const fetchProjects = async () => {
            const token = await getToken({template:'supabase'})
 
-            const projects = await getProjects({orgId, userId, token});
-
-            setProjects(projects);
+            if (orgId || userId) {
+                const projects = await getProjects({ orgId, token });
+                setProjects(projects);
+            }
         };
         fetchProjects();
     }, [getToken, orgId, userId]);

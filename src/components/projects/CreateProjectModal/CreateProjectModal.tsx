@@ -1,7 +1,7 @@
 import {Modal, Stack, Title, Text, Flex, Badge, TextInput, MultiSelect, Button} from "@mantine/core";
 import {useForm} from "@mantine/form";
 import {ProjectColorPicker} from "../../../models/ProjectColorPicker.ts";
-import {useOrganization} from "@clerk/clerk-react";
+import {useAuth, useOrganization} from "@clerk/clerk-react";
 
 type CreateProjectModalProps = {
     isOpen: boolean
@@ -9,6 +9,7 @@ type CreateProjectModalProps = {
 }
 
 const CreateProjectModal = ({  isOpen, onClose }: CreateProjectModalProps) => {
+    const {orgId} = useAuth()
 
     const { memberships } = useOrganization({
         memberships: {
@@ -17,11 +18,10 @@ const CreateProjectModal = ({  isOpen, onClose }: CreateProjectModalProps) => {
         },
     });
 
-
-    const members = memberships.data?.map((membership) => ({
+    const members = memberships?.data?.map((membership) => ({
         value: membership.publicUserData.identifier,
         label: `${membership.publicUserData.firstName} ${membership.publicUserData.lastName}`,
-    }));
+    })) || [];
 
     const form = useForm({
         initialValues: {
@@ -54,7 +54,7 @@ const CreateProjectModal = ({  isOpen, onClose }: CreateProjectModalProps) => {
         <Modal
             opened={isOpen}
             onClose={handleClose}
-            rounded="md"
+            radius="md"
             overlayProps={{
                 backgroundOpacity: 0.15,
                 blur: 0,
@@ -103,8 +103,10 @@ const CreateProjectModal = ({  isOpen, onClose }: CreateProjectModalProps) => {
                         {...form.getInputProps('projectDescription')}
                         style={{ borderBottom: '1px solid #000' }}
                     />
+                    {orgId && (
                     <Stack mt="lg">
                         <Text fw={500}>Assign Members to your project (optional)</Text>
+
                         <MultiSelect
                             searchable
                             clearable
@@ -116,6 +118,7 @@ const CreateProjectModal = ({  isOpen, onClose }: CreateProjectModalProps) => {
                             style={{borderBottom: '1px solid #000'}}
                         />
                     </Stack>
+                    )}
                 </Stack>
                 <Button mt="xl">Create Project</Button>
             </Stack>
