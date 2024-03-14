@@ -3,6 +3,9 @@ import {supabaseClient} from "../../../supabaseClient.ts";
 export type ProjectDetails = {
     name: string;
     description: string;
+    color?: string;
+    created_at?: Date;
+    members?: string[];
 };
 
 export async function createProject(orgId:string | null, token:string  , projectDetails : ProjectDetails) {
@@ -12,7 +15,10 @@ export async function createProject(orgId:string | null, token:string  , project
         .from('projects')
         .insert({
             org_id: orgId,
-            ... projectDetails
+            name: projectDetails.name,
+            description: projectDetails.description,
+            color: projectDetails.color,
+            created_at: new Date().toISOString(),
 
         })
 
