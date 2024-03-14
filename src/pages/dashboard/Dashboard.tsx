@@ -21,8 +21,9 @@ export default function DashboardPage() {
         const fetchProjects = async () => {
            const token = await getToken({template:'supabase'})
 
-            if (orgId || userId) {
-                const projects = await getProjects({ orgId, token });
+            if (token && (orgId || userId)) {
+                // Ensure orgId is a string when passed to getProjects
+                const projects = await getProjects({ orgId: orgId || '', token });
                 setProjects(projects);
             }
         };
@@ -42,13 +43,16 @@ export default function DashboardPage() {
     //     setProjects(projects);
     // }
 
-    const handleDeleteProject = async (id:number) => {
+    const handleDeleteProject = async (id: number) => {
+        // Ensure token is a string
         const token = await getToken({ template: 'supabase' });
+        if (token) {
+            await deleteProject(id, userId || '', token);
 
-        await deleteProject(id, userId, token);
-
-        const projects = await getProjects({userId, orgId, token});
-        setProjects(projects);
+            // Ensure orgId is a string when passed to getProjects
+            const updatedProjects = await getProjects({ orgId: orgId || '', token });
+            setProjects(updatedProjects);
+        }
     }
 
 
