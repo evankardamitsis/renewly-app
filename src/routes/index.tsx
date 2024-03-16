@@ -56,6 +56,16 @@ export default function Routes() {
                             <Projects />
                         </React.Suspense>
                     ),
+                    children: [
+                        {
+                            path: ":id",
+                            element: (
+                                <React.Suspense fallback={<LoadingComponent />}>
+                                    <Projects />
+                                </React.Suspense>
+                            ),
+                        },
+                    ],
                 },
             ],
         },

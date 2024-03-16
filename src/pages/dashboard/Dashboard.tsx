@@ -1,4 +1,4 @@
-import {Button} from "@mantine/core";
+import {Button, Flex, Stack, Title} from "@mantine/core";
 import {useAuth} from "@clerk/clerk-react";
 import {useEffect, useState} from "react";
 import {getProjects} from "../../api/projects/getProjects.ts";
@@ -43,10 +43,11 @@ export default function DashboardPage() {
     };
 
     return (
-        <>
-            <h1>Dashboard page</h1>
-            <p>This is a protected page.</p>
-            <Button onClick={() => setCreateProjectModalOpen(true)}>Create Project</Button>
+        <Stack w={"100%"}>
+            <Flex justify={"space-between"} align={"center"}>
+            <Title order={2}>Overview</Title>
+            <Button radius={"sm"} onClick={() => setCreateProjectModalOpen(true)}>Create Project</Button>
+            </Flex>
             {projects.map((project) => (
                 <div key={project.id}>
                     <h2 style={{ color: project.color }}>{project.name}</h2>
@@ -59,6 +60,6 @@ export default function DashboardPage() {
                 onClose={() => setCreateProjectModalOpen(false)}
                 setProjects={setProjects}
             />
-        </>
+        </Stack>
     );
 }

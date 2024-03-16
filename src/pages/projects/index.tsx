@@ -1,9 +1,10 @@
+import {Stack} from "@mantine/core";
 
 const Projects = () => {
     return (
-        <div>
-
-        </div>
+        <Stack>
+            Projects
+        </Stack>
     );
 };
 

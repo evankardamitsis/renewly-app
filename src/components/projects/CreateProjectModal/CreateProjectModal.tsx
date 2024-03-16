@@ -39,7 +39,7 @@ const CreateProjectModal = ({  isOpen, onClose, setProjects }: CreateProjectModa
         });
         const updatedProjects = await getProjects({ orgId: orgId || '', token });
         setProjects(updatedProjects);
-        toast("Project created successfully", { position: 'bottom-right', autoClose: 3000, type: 'success' });
+        toast("Project created successfully", { position: 'bottom-right', type: 'success' });
         handleClose();
     }
 

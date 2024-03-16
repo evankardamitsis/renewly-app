@@ -1,18 +1,23 @@
 import {ActionIcon, Flex, Title, Text} from "@mantine/core";
 import {UserButton, useUser} from "@clerk/clerk-react";
 import { Settings, HelpCircle } from "react-feather";
+import {useNavigate} from "react-router-dom";
 
 const Header = () => {
-
+    const navigate = useNavigate();
     const { user } = useUser();
 
-    const firstName = user?.firstName;
+    const firstName = user?.firs
+
+    const handleGoHome = () => {
+        navigate('/');
+    }
 
     return (
         <Flex justify="space-between" align="center" w="100%">
             {/* Left side content */}
-            <Flex>
-               <Title order={3}>Renewly</Title>
+            <Flex className={"cursor-pointer"}>
+               <Title order={3} onClick={handleGoHome}>Renewly</Title>
             </Flex>
             {/* Right side content */}
             <Flex ml="auto" align="center" gap="md">
