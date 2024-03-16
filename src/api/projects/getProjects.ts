@@ -8,17 +8,16 @@ type Props =  {
 export async function getProjects({ orgId, token }:Props) {
     const supabase = await supabaseClient(token);
 
-    let query = supabase.from('projects').select('*');
+    let query = supabase.from('projects').select('id, name, description, color, created_at, members')
+
     if (orgId) {
         query = query.eq('org_id', orgId);
-    } else {
-        // Fetch projects with no org_id associated
-        query = query.is('org_id', null);
     }
 
     const { data: projects, error } = await query;
+    console.log('Fetched projects:', projects);
+    if (error) console.error('Error fetching projects:', error);
 
-    if (error) throw error;
 
     return projects;
 }

@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import {getProjects} from "../../api/projects/getProjects.ts";
 import {deleteProject} from "../../api/projects/deleteProject.ts";
 import CreateProjectModal from "../../components/projects/CreateProjectModal/CreateProjectModal.tsx";
+import {toast} from "sonner";
 
 interface Project {
     id: number;
@@ -15,46 +16,31 @@ interface Project {
 export default function DashboardPage() {
     const [projects, setProjects] = useState<Project[]>([]);
     const [createProjectModalOpen, setCreateProjectModalOpen] = useState(false);
-    const { userId, orgId, getToken } = useAuth();
+    const { orgId, getToken } = useAuth();
 
     useEffect(() => {
         const fetchProjects = async () => {
-           const token = await getToken({template:'supabase'})
-
-            if (token && (orgId || userId)) {
-                // Ensure orgId is a string when passed to getProjects
-                const projects = await getProjects({ orgId: orgId || '', token });
+            const token = await getToken({ template: 'supabase' });
+            // Check for token validity and presence of either orgId or userId
+            if (token) {
+                // Pass the orgId and userId to the getProjects function
+                const projects = await getProjects({ orgId, token });
                 setProjects(projects);
             }
         };
         fetchProjects();
-    }, [getToken, orgId, userId]);
-
-    // const handleCreateProject = async () => {
-    //     const token = await getToken({template:'supabase'})
-    //
-    //    await createProject(orgId, token, {
-    //         name: "new btf Project",
-    //         description: "This is a new project",
-    //         color: "#FF5733"
-    //     });
-    //
-    //     const projects = await getProjects({orgId, userId, token});
-    //     setProjects(projects);
-    // }
+    }, [getToken, orgId]);
 
     const handleDeleteProject = async (id: number) => {
-        // Ensure token is a string
         const token = await getToken({ template: 'supabase' });
         if (token) {
-            await deleteProject(id, userId || '', token);
-
-            // Ensure orgId is a string when passed to getProjects
+            await deleteProject(id, token);
+            toast('Project deleted successfully', { position: 'bottom-right', type: 'success' });
+            // Optional: Re-fetch projects list after deletion
             const updatedProjects = await getProjects({ orgId: orgId || '', token });
             setProjects(updatedProjects);
         }
-    }
-
+    };
 
     return (
         <>
@@ -71,6 +57,7 @@ export default function DashboardPage() {
             <CreateProjectModal
                 isOpen={createProjectModalOpen}
                 onClose={() => setCreateProjectModalOpen(false)}
+                setProjects={setProjects}
             />
         </>
     );

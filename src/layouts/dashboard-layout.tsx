@@ -4,6 +4,8 @@ import {useDisclosure} from "@mantine/hooks";
 import {AppShell, Burger, Flex} from "@mantine/core";
 import Header from "../components/@common/Header.tsx";
 import Sidebar from "../components/@common/Sidebar.tsx";
+import { Toaster } from "@/components/ui/sonner"
+
 
 export default function DashboardLayout() {
     const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
@@ -35,6 +37,7 @@ export default function DashboardLayout() {
             </AppShell.Navbar>
             <AppShell.Main>
                 <Outlet />
+                <Toaster richColors />
             </AppShell.Main>
         </AppShell>
     )

@@ -1,15 +1,21 @@
 import {Modal, Stack, Title, Text, Flex, Badge, TextInput, MultiSelect, Button} from "@mantine/core";
 import {useForm} from "@mantine/form";
-import {ProjectColorPicker} from "../../../models/ProjectColorPicker.ts";
+import {ProjectColorPicker} from "../../../types/ProjectColorPicker.ts";
 import {useAuth, useOrganization} from "@clerk/clerk-react";
+import {createProject} from "../../../api/projects/createProject.ts";
+import {useState} from "react";
+import {toast} from "sonner";
+import {getProjects} from "../../../api/projects/getProjects.ts";
 
 type CreateProjectModalProps = {
     isOpen: boolean
     onClose: () => void
+    setProjects: (projects: Project[]) => void
 }
 
-const CreateProjectModal = ({  isOpen, onClose }: CreateProjectModalProps) => {
-    const {orgId} = useAuth()
+const CreateProjectModal = ({  isOpen, onClose, setProjects }: CreateProjectModalProps) => {
+    const {orgId, getToken} = useAuth()
+    const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
     const { memberships } = useOrganization({
         memberships: {
@@ -22,6 +28,20 @@ const CreateProjectModal = ({  isOpen, onClose }: CreateProjectModalProps) => {
         value: membership.publicUserData.identifier,
         label: `${membership.publicUserData.firstName} ${membership.publicUserData.lastName}`,
     })) || [];
+
+    const handleCreateProject = async () => {
+        const token = await getToken({template:'supabase'})
+
+       await createProject(orgId, token, {
+            name: form.values.projectName,
+            description: form.values.projectDescription,
+            color: form.values.projectColor,
+        });
+        const updatedProjects = await getProjects({ orgId: orgId || '', token });
+        setProjects(updatedProjects);
+        toast("Project created successfully", { position: 'bottom-right', autoClose: 3000, type: 'success' });
+        handleClose();
+    }
 
     const form = useForm({
         initialValues: {
@@ -36,18 +56,13 @@ const CreateProjectModal = ({  isOpen, onClose }: CreateProjectModalProps) => {
 
     const handleColorSelect = (color: keyof typeof ProjectColorPicker) => {
         form.setFieldValue('projectColor', ProjectColorPicker[color]);
+        setSelectedColor(ProjectColorPicker[color]);
     }
-
-    // const handleSubmit = () => {
-    //     // Submit form data to backend
-    //     console.log(form.values);
-    //
-    //     handleClose();
-    // }
 
     const handleClose = () => {
         onClose()
         form.reset()
+        setSelectedColor(null)
     }
 
     return (
@@ -77,9 +92,10 @@ const CreateProjectModal = ({  isOpen, onClose }: CreateProjectModalProps) => {
                                     backgroundColor: ProjectColorPicker[color],
                                     width: 10,
                                     height: 20,
-                                    borderRadius: 0,
+                                    borderRadius: 2,
                                     cursor: 'pointer',
-                                    border: '1px solid #000',
+                                    border: selectedColor === ProjectColorPicker[color] ? '2px solid black' : '1px solid #000',
+                                    boxShadow: selectedColor === ProjectColorPicker[color] ? '0px 0px 1px black' : 'none',
                                 }}
                                 onClick={() => handleColorSelect(color)}
                                 aria-label={color}
@@ -120,7 +136,7 @@ const CreateProjectModal = ({  isOpen, onClose }: CreateProjectModalProps) => {
                     </Stack>
                     )}
                 </Stack>
-                <Button mt="xl">Create Project</Button>
+                <Button mt="xl" onClick={handleCreateProject}>Create Project</Button>
             </Stack>
         </Modal>
     );

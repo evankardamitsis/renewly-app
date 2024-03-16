@@ -4,7 +4,9 @@ import {OrganizationSwitcher} from "@clerk/clerk-react";
 const Sidebar = () => {
     return (
         <Stack>
-            <OrganizationSwitcher />
+            <OrganizationSwitcher
+                hidePersonal={true}
+            />
         </Stack>
     );
 };
