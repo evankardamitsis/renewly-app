@@ -1,13 +1,12 @@
 import {Stack} from "@mantine/core";
 
-const Projects = () => {
 
-
+const ProjectTasks = () => {
     return (
         <Stack>
-            Projects
+            im the project tasks
         </Stack>
     );
 };
 
-export default Projects;
+export default ProjectTasks;

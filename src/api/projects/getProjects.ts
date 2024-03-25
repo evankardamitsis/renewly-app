@@ -15,7 +15,7 @@ export async function getProjects({ orgId, token }:Props) {
     }
 
     const { data: projects, error } = await query;
-    console.log('Fetched projects:', projects);
+
     if (error) console.error('Error fetching projects:', error);
 
 

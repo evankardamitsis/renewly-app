@@ -7,7 +7,7 @@ const Header = () => {
     const navigate = useNavigate();
     const { user } = useUser();
 
-    const firstName = user?.firs
+    const firstName = user?.firstName
 
     const handleGoHome = () => {
         navigate('/');

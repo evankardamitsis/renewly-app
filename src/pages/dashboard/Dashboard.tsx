@@ -1,36 +1,16 @@
 import {Button, Flex, Stack, Title} from "@mantine/core";
 import {useAuth} from "@clerk/clerk-react";
-import {useEffect, useState} from "react";
+import { useState} from "react";
 import {getProjects} from "../../api/projects/getProjects.ts";
 import {deleteProject} from "../../api/projects/deleteProject.ts";
 import CreateProjectModal from "../../components/projects/CreateProjectModal/CreateProjectModal.tsx";
 import {toast} from "sonner";
-
-interface Project {
-    id: number;
-    name: string;
-    description: string;
-    color?: string;
-}
+import {useProjects} from "../../context/ProjectsContext.tsx";
 
 export default function DashboardPage() {
-    const [projects, setProjects] = useState<Project[]>([]);
     const [createProjectModalOpen, setCreateProjectModalOpen] = useState(false);
+    const { projects, setProjects } = useProjects();
     const { orgId, getToken } = useAuth();
-
-    useEffect(() => {
-        const fetchProjects = async () => {
-            const token = await getToken({ template: 'supabase' });
-            // Check for token validity and presence of either orgId or userId
-            if (token) {
-                // Pass the orgId and userId to the getProjects function
-                const projects = await getProjects({ orgId, token });
-                setProjects(projects);
-            }
-        };
-        fetchProjects();
-    }, [getToken, orgId]);
-
     const handleDeleteProject = async (id: number) => {
         const token = await getToken({ template: 'supabase' });
         if (token) {

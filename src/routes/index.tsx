@@ -10,6 +10,7 @@ const DashboardPage = React.lazy(() => import("../pages/dashboard/Dashboard.tsx"
 const SignInPage = React.lazy(() => import("../pages/sign-in/SignIn.tsx"));
 const SignUpPage = React.lazy(() => import("../pages/sign-up/SignUp.tsx"));
 const Projects = React.lazy(() => import("../pages/projects/index.tsx"));
+const ProjectDetails = React.lazy(() => import("../pages/projects/ProjectDetails/index.tsx"));
 
 export default function Routes() {
     return useRoutes([
@@ -51,17 +52,20 @@ export default function Routes() {
                 },
                 {
                     path: "projects",
-                    element: (
-                        <React.Suspense fallback={<LoadingComponent />}>
-                            <Projects />
-                        </React.Suspense>
-                    ),
                     children: [
                         {
-                            path: ":id",
+                            index: true,
+                            element: (
+                                <React.Suspense fallback={<LoadingComponent/>}>
+                                    <Projects/>
+                                </React.Suspense>
+                            ),
+                        },
+                        {
+                            path: ":projectId",
                             element: (
                                 <React.Suspense fallback={<LoadingComponent />}>
-                                    <Projects />
+                                    <ProjectDetails />
                                 </React.Suspense>
                             ),
                         },

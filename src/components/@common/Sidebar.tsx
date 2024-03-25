@@ -1,45 +1,27 @@
 import {Flex, NavLink, Stack, Title, Text} from "@mantine/core";
 import {OrganizationSwitcher, useAuth} from "@clerk/clerk-react";
 import { UserPlus, Plus } from "react-feather";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import CreateProjectModal from "../projects/CreateProjectModal/CreateProjectModal.tsx";
 import {Link} from "react-router-dom";
-import {getProjects} from "../../api/projects/getProjects.ts";
+import {useProjects} from "../../context/ProjectsContext.tsx";
 
-type SidebarProps = {
-    setProjects?: (projects: Project[]) => void
-}
-
-const Sidebar = ({setProjects}: SidebarProps) => {
+const Sidebar = () => {
     const [createProjectModalOpen, setCreateProjectModalOpen] = useState(false);
-    const [projects, setLocalProjects] = useState([]);
-
-    const { orgId, getToken } = useAuth();
-
-    useEffect(() => {
-        const fetchProjects = async () => {
-            const token = await getToken({ template: 'supabase' });
-            // Check for token validity and presence of either orgId or userId
-            if (token) {
-                // Pass the orgId and userId to the getProjects function
-                const projects = await getProjects({ orgId, token });
-                setLocalProjects(projects);
-            }
-        };
-        fetchProjects();
-    }, [getToken, orgId]);
+    const { projects, setProjects } = useProjects();
 
     return (
         <Stack>
             <Flex>
                 <OrganizationSwitcher
                     hidePersonal={true}
+                    afterSelectOrganizationUrl={"/projects"}
                 />
             </Flex>
             <Stack gap={0}>
                 <NavLink
                     component={Link}
-                    to="/projects"
+                    to="#"
                     label={
                         <Text fz={"sm"} fw={500} c={"#6A696A"}>PROJECTS</Text>
                     }
